@@ -8,10 +8,10 @@ print(" #  onion environement install    #");
 print(" ################################### ");
 
 
-packageRepos = [["json-c" ,"git://github.com/json-c/json-c.git", "json-c-dir" , ""],
-                ["libubox","git://nbd.name/luci2/libubox.git"  , "libubox-dir", "0608d1299546d4af1facc271a090cb2abb8c6105"],
-                ["uci"    ,"git://nbd.name/uci.git"            , "uci-dir"    , "b42ee8f21842fab41a4cdf27960000bb1b3f42a7"],
-                ["ubus"   ,"git://nbd.name/luci2/ubus.git"     , "ubus-dir"   , "4e82a1fabb87b5e3c948a792e16b0fac3702721b"],
+packageRepos = [["json-c" ,"git://github.com/json-c/json-c.git", "json-c-dir" , "", ""],
+                ["libubox","git://nbd.name/luci2/libubox.git"  , "libubox-dir", "0608d1299546d4af1facc271a090cb2abb8c6105","lib-ubox-blobmsg_json.patch"],
+                ["uci"    ,"git://nbd.name/uci.git"            , "uci-dir"    , "b42ee8f21842fab41a4cdf27960000bb1b3f42a7",""],
+                ["ubus"   ,"git://nbd.name/luci2/ubus.git"     , "ubus-dir"   , "4e82a1fabb87b5e3c948a792e16b0fac3702721b",""],
                ];
 
 packageConf =  [["json-c"   , "autoreconf -i && ./configure --prefix=/usr", "make" , "sudo make install", "", "sudo ln -sf /usr/include/json-c /usr/include/json"],
@@ -25,6 +25,7 @@ class reposInstall:
     gitUrl          = 1
     gitDir          = 2
     checkoutVersion = 3
+    patchDir        = 4
 
 class packageConfig:
     packageName         = 0
@@ -38,21 +39,26 @@ def gitCheckout(__packageName__):
     print("fetching package : ", __packageName__);
 
     for idx in range(4):
-        if (cmp(__packageName__, packageRepos[idx][reposInstall.packageName]) == 0 ):
+        if (__packageName__ == packageRepos[idx][reposInstall.packageName]):
             print ("package got", __packageName__);
             break;
 
     Repo.clone_from(packageRepos[idx][reposInstall.gitUrl], packageRepos[idx][reposInstall.gitDir])
 
-    if cmp(packageRepos[idx][reposInstall.checkoutVersion], "") > 0:
+    if (packageRepos[idx][reposInstall.checkoutVersion] != ""):
         cmd = "cd " + str(packageRepos[idx][reposInstall.gitDir]) + " && git checkout master && git checkout " + str(packageRepos[idx][reposInstall.checkoutVersion]) + " && cd ..";
         os.system(cmd);
     #print("retrieving package name : ", repos)
+    if (packageRepos[idx][reposInstall.patchDir] != ""):
+        cmd = "cd " + str(packageRepos[idx][reposInstall.gitDir]) + " && cp ../patches/" + str(packageRepos[idx][reposInstall.patchDir]) +\
+                      " . " + " && patch -p1 < " + str(packageRepos[idx][reposInstall.patchDir]);
+        print ("command : ", cmd);
+        os.system(cmd);
 
 def configureAndCompile(__packageName__):
     print("configure and building : ", __packageName__);
     for idx in range(4):
-        if (cmp(__packageName__, packageRepos[idx][reposInstall.packageName]) == 0 ):
+        if (__packageName__ ==  packageRepos[idx][reposInstall.packageName]):
             print ("package got", __packageName__);
             break;
 

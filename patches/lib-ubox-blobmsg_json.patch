@@ -1,0 +1,43 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index eb112af..f4504ec 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -23,7 +23,7 @@ INSTALL(TARGETS ubox
+ )
+ 
+ find_library(json json)
+-IF(EXISTS ${json})
++#IF(EXISTS ${json})
+ 	ADD_LIBRARY(blobmsg_json SHARED blobmsg_json.c)
+ 	TARGET_LINK_LIBRARIES(blobmsg_json ubox json)
+ 
+@@ -40,4 +40,4 @@ IF(EXISTS ${json})
+ 		DESTINATION share/libubox
+ 	)
+ 
+-ENDIF()
++#ENDIF()
+diff --git a/blobmsg_json.c b/blobmsg_json.c
+index badf87e..2a5c79a 100644
+--- a/blobmsg_json.c
++++ b/blobmsg_json.c
+@@ -15,6 +15,7 @@
+  */
+ #include "blobmsg.h"
+ #include "blobmsg_json.h"
++#define is_error(ptr) (ptr == NULL)
+ 
+ static bool blobmsg_add_object(struct blob_buf *b, json_object *obj)
+ {
+diff --git a/jshn.c b/jshn.c
+index f7a46de..3e42e94 100644
+--- a/jshn.c
++++ b/jshn.c
+@@ -8,6 +8,7 @@
+ #include "list.h"
+ 
+ #define MAX_VARLEN	256
++#define is_error(ptr) (ptr == NULL)
+ 
+ static int add_json_element(const char *key, json_object *obj);
+ 
