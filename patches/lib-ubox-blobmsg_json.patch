@@ -1,16 +1,25 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index eb112af..f4504ec 100644
+index eb112af..acd0d47 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -23,7 +23,7 @@ INSTALL(TARGETS ubox
+@@ -22,13 +22,13 @@ INSTALL(TARGETS ubox
+ 	LIBRARY DESTINATION lib
  )
  
- find_library(json json)
+-find_library(json json)
 -IF(EXISTS ${json})
++find_library(json-c json-c)
 +#IF(EXISTS ${json})
  	ADD_LIBRARY(blobmsg_json SHARED blobmsg_json.c)
- 	TARGET_LINK_LIBRARIES(blobmsg_json ubox json)
+-	TARGET_LINK_LIBRARIES(blobmsg_json ubox json)
++	TARGET_LINK_LIBRARIES(blobmsg_json ubox json-c)
  
+ 	ADD_EXECUTABLE(jshn jshn.c)
+-	TARGET_LINK_LIBRARIES(jshn json)
++	TARGET_LINK_LIBRARIES(jshn json-c)
+ 
+ 	INSTALL(TARGETS blobmsg_json jshn
+ 		LIBRARY DESTINATION lib
 @@ -40,4 +40,4 @@ IF(EXISTS ${json})
  		DESTINATION share/libubox
  	)
