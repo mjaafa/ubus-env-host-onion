@@ -14,7 +14,7 @@ packageRepos = [["json-c" ,"git://github.com/json-c/json-c.git", "json-c-dir" , 
                 ["ubus"   ,"git://nbd.name/luci2/ubus.git"     , "ubus-dir"   , "4e82a1fabb87b5e3c948a792e16b0fac3702721b",""],
                ];
 
-packageConf =  [["json-c"   , "autoreconf -i && ./configure --prefix=/usr", "make" , "sudo make install", "", "sudo ln -sf /usr/include/json-c /usr/include/json"],
+packageConf =  [["json-c"   , "cmake CMakeLists.txt", "make" , "sudo make install", "", "sudo ln -sf /usr/include/json-c /usr/include/json"],
                 ["libubox"  , "cmake CMakeLists.txt -DBUILD_LUA=OFF"    , "make" , "sudo make install", "", "sudo cp /usr/local/lib/libubox.so /usr/lib/libubox.so && sudo mkdir -p /usr/share/libubox && sudo ln -sf /usr/local/share/libubox/jshn.sh /usr/share/libubox/jshn.sh"],
                 ["uci"      , "cmake CMakeLists.txt -DBUILD_LUA=OFF"    , "make" , "class=\"western\" && sudo make install", "","sudo ln -sf /usr/local/lib/libuci.so /usr/lib/libuci.so"],
                 ["ubus"     , "cmake CMakeLists.txt -DBUILD_LUA=OFF"    , "make" , "sudo make install", "", "sudo ln -sf /usr/local/sbin/ubusd /usr/sbin/ubusd && sudo ln -sf /usr/local/lib/libubus.so /usr/lib/libubus.so"],
