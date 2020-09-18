@@ -1,0 +1,5 @@
+name: ubus-env-host-onion-env
+channels:
+  - defaults
+prefix: /home/blade/anaconda3/envs/ubus-env-host-onion-env
+
